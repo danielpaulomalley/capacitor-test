@@ -1,1 +1,13 @@
-<button>test button</button>
+<button [disabled]="busy"
+  (click)="handleClick()">find printers</button>
+<div>{{message}}</div>
+<table>
+  <tbody>
+    @for (d of devices; track $index) {
+      <tr>
+        <td>{{d.name}}</td>
+        <td>{{d.address}}</td>
+      </tr>
+    }
+  </tbody>
+</table>
