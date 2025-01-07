@@ -1,0 +1,28 @@
+PODS:
+  - Capacitor (6.2.0):
+    - CapacitorCordova
+  - CapacitorCordova (6.2.0)
+  - CapacitorThermalPrinter (0.2.3):
+    - Capacitor
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - CapacitorThermalPrinter (from `../../node_modules/capacitor-thermal-printer`)
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorThermalPrinter:
+    :path: "../../node_modules/capacitor-thermal-printer"
+
+SPEC CHECKSUMS:
+  Capacitor: 1f3c7b9802d958cd8c4eb63895fff85dff2e1eea
+  CapacitorCordova: b33e7f4aa4ed105dd43283acdd940964374a87d9
+  CapacitorThermalPrinter: 19e599574756b91f742fe92ca56108266c3dd8f5
+
+PODFILE CHECKSUM: 57d675d59beb64c7baa1fae64cf7c245407dea14
+
+COCOAPODS: 1.15.2
