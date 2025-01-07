@@ -10,7 +10,8 @@ import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  providers: [BluetoothSerial]
 })
 export class AppComponent {
   title = 'capacitor-test';
