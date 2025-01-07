@@ -1,44 +1,64 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 //import { BluetoothPrinter } from '@kduma-autoid/capacitor-bluetooth-printer';
 //import { Printer } from "@awesome-cordova-plugins/printer";
-import EscPosEncoder from 'esc-pos-encoder-ionic';
-import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
+import { CapacitorThermalPrinter } from 'capacitor-thermal-printer';
+
 
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  providers: [BluetoothSerial]
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'capacitor-test';
+
   busy = false
-  message = ""
+  messages: string[] = []
   devices: {name: string, address: string}[] = []
 
   constructor(
-    private btService: BluetoothSerial
-  ) {}
+    private zone: NgZone
+  ) {
+    CapacitorThermalPrinter.addListener("discoverDevices", ({devices}) => {
+      zone.run(() => {
+        this.devices = []
+        for (const d of devices) {
+          this.devices.push({
+            name: d.name,
+            address: d.address
+          })
+        }
+      })
+    })
+    CapacitorThermalPrinter.addListener("connected", () => {
+      zone.run(() => {
+        this.messages.push("connected")
+      })
+    })
+    CapacitorThermalPrinter.addListener("disconnected", () => {
+      zone.run(() => {
+        this.messages.push("disconnected")
+      })
+    })
+    CapacitorThermalPrinter.addListener("discoveryFinish", () => {
+      zone.run(() => {
+        this.messages.push("discoveryFinish")
+      })
+    })
+  }
   async handleClick() {
-
     if (this.busy) return
     this.busy = true
     this.devices = []
-    this.message = "looking for printers"
+    this.messages.push("looking for printers")
     try {
-      const devices = await this.btService.list()
-      for (const d of devices) {
-        this.devices.push({
-          name: d.name,
-          address: d.id
-        })
-      }
-      this.message = "think it worked"
+      await CapacitorThermalPrinter.startScan()
+      this.messages.push("think it worked")
     } catch(e) {
-      this.message = String(e)
+      this.messages.push(String(e))
     }
 
 
