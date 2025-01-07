@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { BluetoothPrinter } from '@kduma-autoid/capacitor-bluetooth-printer';
-import { Printer } from "@awesome-cordova-plugins/printer";
+//import { BluetoothPrinter } from '@kduma-autoid/capacitor-bluetooth-printer';
+//import { Printer } from "@awesome-cordova-plugins/printer";
+import EscPosEncoder from 'esc-pos-encoder-ionic';
+import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
 
 
 @Component({
@@ -15,6 +17,10 @@ export class AppComponent {
   busy = false
   message = ""
   devices: {name: string, address: string}[] = []
+
+  constructor(
+    private btService: BluetoothSerial
+  ) {}
   async handleClick() {
 
     if (this.busy) return
@@ -22,8 +28,14 @@ export class AppComponent {
     this.devices = []
     this.message = "looking for printers"
     try {
-      const x = await Printer.pick()
-      this.message = String(x)
+      const devices = await this.btService.list()
+      for (const d of devices) {
+        this.devices.push({
+          name: d.name,
+          address: d.id
+        })
+      }
+      this.message = "think it worked"
     } catch(e) {
       this.message = String(e)
     }
